@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "Gab Classic",
+  "version": "2.0.0",
+  "description": "Intercepts the request to https://gab.com/home and returns the classic gab files",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "@gabclassic",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "webRequestFilterResponse",
+    "browsingData"
+  ],
+
+  "host_permissions": [
+    "https://gab.com/*"
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*.js", "assets/*.css"],
+      "matches": ["https://gab.com/*"]
+    }
+  ]
+}
