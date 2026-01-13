@@ -199,3 +199,19 @@ browser.webRequest.onBeforeRequest.addListener(
   { urls: ["*://*.gab.com/*"], types: ["main_frame", "script", "stylesheet"] },
   ["blocking"]
 );
+
+// Listen for tab updates to detect the "Speak Freely" title
+browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  // We only care about title updates on gab.com
+  if (changeInfo.title && tab.url && tab.url.includes("gab.com")) {
+    const title = changeInfo.title.toLowerCase();
+
+    // Check for the "speak freely" string used by the original site
+    if (title.toLowerCase().includes("speak freely")) {
+      console.warn(`[Interceptor] Original page detected! Title: "${changeInfo.title}". Forcing reload...`);
+
+      // Reload and bypass cache to give webRequest another chance to intercept
+      browser.tabs.reload(tabId, { bypassCache: true });
+    }
+  }
+}, { properties: ["title"] });
