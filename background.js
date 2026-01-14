@@ -54,6 +54,7 @@ const home=encoder.encode(`
 <script id='initial-state' type='application/json'></script>
 <script>
     let getme = async () => {
+        // TODO: handle logged out state
         let resp = await fetch("https://gab.com/api/v3/me", {
             "credentials": "include",
             "headers": {
@@ -74,8 +75,17 @@ const home=encoder.encode(`
             "mode": "cors"
         });
         let state = await resp.text();
+        let obj = JSON.parse(state);
+
         let node = document.getElementById('initial-state');
         node.innerText = state;
+
+        node = document.querySelector('meta[name="csrf-token"]');
+        if (!node) {
+            node = document.createElement("meta");
+            node.setAttribute("name", "csrf-token");
+        }
+        node.setAttribute("content", obj.meta.csrf.csrf_token);
 
         node = document.createElement('script');
         node.setAttribute('src', '/packs/js/common-d6df2ea8f045c39318d4.js');
