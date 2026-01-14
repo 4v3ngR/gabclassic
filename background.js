@@ -53,6 +53,21 @@ const home=encoder.encode(`
 <meta content='BO_CXXKZ4X6nRHs3rjx1ld-mejF4i080a_IWbvPN_-CwsREbsqB6QjXNvtHaQXe05-LhYd9s_dsJuU2fry0AjOw=' name='applicationServerKey'>
 <script id='initial-state' type='application/json'></script>
 <script>
+    window.onload = () => {
+        let theme = window.localStorage.getItem("theme");
+        if (theme) {
+            let bg = "white";
+            switch (theme.toLowerCase()) {
+                case "dark": bg = "#333"; break;
+                case "muted": bg = "#333"; break;
+                case "night": bg = "#1b1e2c"; break;
+                case "light": bg = "#f0f2f5"; break;
+                case "black": bg = "#000"; break;
+            }
+            document.body.style.background = bg;
+        }
+    }
+
     let getme = async () => {
         let resp = await fetch("https://gab.com/api/v3/me", {
             "credentials": "include",
@@ -126,7 +141,7 @@ const home=encoder.encode(`
 <body class=''>
 <div data-props='{&quot;locale&quot;:&quot;en&quot;}' id='gabsocial'>
   <style>
-    body, html { margin: 0; padding: 0; height: 100%; background-color: white; }
+    body, html { margin: 0; padding: 0; height: 100%; }
     #gabsocial { display: flex; justify-content: center; align-items: center; height: 100vh; }
     .logo-box { font-family: Arial, sans-serif; font-weight: bold; font-size: 3rem; color: #21cf7a; background-color: white; border: 6px solid #21cf7a; margin: 10px 20px; display: inline-block; line-height: 1; }
     .highlight { background-color: #21cf7a; color: white; padding: 0 5px; margin-left: 5px; }
