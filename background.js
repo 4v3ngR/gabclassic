@@ -78,7 +78,7 @@ const home=encoder.encode(`
         node.innerText = state;
 
         node = document.createElement('script');
-        node.setAttribute('src', '/packs/js/common-d6df2ea8f045c39318d4.js/packs/js/common-d6df2ea8f045c39318d4.js');
+        node.setAttribute('src', '/packs/js/common-d6df2ea8f045c39318d4.js');
         node.setAttribute('crossorigin', 'anonymous');
         document.head.appendChild(node);
 
