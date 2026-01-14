@@ -58293,6 +58293,7 @@ console.warn("GAB CLASSIC EXTENSION LOADED");
         Object(g.a)(t, e);
         var n = t.prototype;
         return n.componentDidMount = function() {
+            this.state.theme = window.localStorage.getItem("theme") || this.state.theme;
             this.updateTheme(this.state.theme), this.updateRadiusSmallDisabled(this.state.radiusSmallDisabled), 
             this.updateRadiusCircleDisabled(this.state.radiusCircleDisabled), this.updateFontSizes(this.state.fontSize), 
             this.updateAccentColor(this.state.accentColor), window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches && !E.C && this.updateTheme("night");
@@ -58326,6 +58327,7 @@ console.warn("GAB CLASSIC EXTENSION LOADED");
             H.J.hasOwnProperty(t) || (t = H.w), document.documentElement.style.setProperty("font-size", H.J[t]);
         }, n.updateTheme = function(e) {
             var t = e.toLowerCase();
+            window.localStorage.setItem("theme", t);
             H.Qd.indexOf(t) < 0 && (t = H.y), document.documentElement.setAttribute("theme", t);
         }, n.render = function() {
             return this.props.children;
