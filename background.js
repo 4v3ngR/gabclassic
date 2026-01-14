@@ -81,6 +81,25 @@ const home=encoder.encode(`
             return;
         }
 
+        let quirks = window.localStorage.getItem("quirks");
+        if (quirks) try {
+            let deepMerge = (target, source) => {
+              for (const key in source) {
+                if (source[key] instanceof Object && key in target) {
+                  Object.assign(source[key], deepMerge(target[key], source[key]));
+                }
+              }
+
+              Object.assign(target || {}, source);
+              return target;
+            }
+            let qObj = JSON.parse(quirks);
+            let sq = JSON.stringify(deepMerge(obj, qObj));
+            state = sq;
+        } catch (ex) {
+            console.warn("bad quirks", ex.message, quirks);
+        }
+
         let node = document.getElementById('initial-state');
         node.innerText = state;
 
