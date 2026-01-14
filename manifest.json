@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Gab Classic",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Intercepts the request to https://gab.com/home and returns the classic gab files",
 
   "browser_specific_settings": {
