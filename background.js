@@ -106,15 +106,15 @@ const home=encoder.encode(`
 </head>
 <body class=''>
 <div data-props='{&quot;locale&quot;:&quot;en&quot;}' id='gabsocial'>
-<noscript>
-<div style='padding: 60px; max-width: 560px;'>
-<img alt="Gab Social" width="100px" src="/packs/media/images/logo-967cf32f5e1a6d10524ceeea220142a9.svg" />
-<div style='margin-top: 20px; line-height: 2rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;'>
-To use the Gab Social web application, please enable JavaScript. Alternatively, try one of the <a href="https://apps.gab.com">
-native apps</a>
-for Gab Social for your platform.  </div>
-</div>
-</noscript>
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; background-color: white; }
+    #gabsocial { display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .logo-box { font-family: Arial, sans-serif; font-weight: bold; font-size: 3rem; color: #21cf7a; background-color: white; border: 6px solid #21cf7a; margin: 10px 20px; display: inline-block; line-height: 1; }
+    .highlight { background-color: #21cf7a; color: white; padding: 0 5px; margin-left: 5px; }
+  </style>
+  <div class="logo-box">
+    GAB<span class="highlight">Classic</span>
+  </div>
 </div>
 </body>
 </html>
