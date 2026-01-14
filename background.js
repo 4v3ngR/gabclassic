@@ -54,7 +54,6 @@ const home=encoder.encode(`
 <script id='initial-state' type='application/json'></script>
 <script>
     let getme = async () => {
-        // TODO: handle logged out state
         let resp = await fetch("https://gab.com/api/v3/me", {
             "credentials": "include",
             "headers": {
@@ -76,6 +75,11 @@ const home=encoder.encode(`
         });
         let state = await resp.text();
         let obj = JSON.parse(state);
+        if (obj.error) {
+            // if we get an error, redirect to the signin page
+            window.location = "/auth/sign_in";
+            return;
+        }
 
         let node = document.getElementById('initial-state');
         node.innerText = state;
