@@ -15102,7 +15102,7 @@ console.warn("GAB CLASSIC EXTENSION LOADED");
                 }, void 0, Object(o.a)(_.a, {
                     title: "Settings",
                     color: "primary",
-                    href: "/settings/preferences",
+                    href: "/settings/display-options",
                     backgroundColor: "tertiary",
                     onClick: this.handleSidebarClose,
                     icon: "cog",
@@ -15260,24 +15260,9 @@ console.warn("GAB CLASSIC EXTENSION LOADED");
                     className: [ e.d, e.boxShadowNone, e.w100PC ].join(" ")
                 }, void 0, Object(o.a)(v.a, {
                     items: [ {
-                        href: "/settings/preferences",
+                        href: "/settings/display-options",
                         onClick: this.handleSidebarClose,
                         title: "Account Settings"
-                    }, !j.y && {
-                        onClick: this.handleOnOpenProModal,
-                        title: "Go GabPRO"
-                    }, {
-                        href: "https://shop.dissenter.com",
-                        onClick: this.handleSidebarClose,
-                        title: "Visit the Dissenter Shop"
-                    }, {
-                        href: "https://help.gab.com/article/gab-mobile-app",
-                        onClick: this.handleSidebarClose,
-                        title: "Gab Mobile App"
-                    }, {
-                        href: "https://grow.gab.com",
-                        onClick: this.handleSidebarClose,
-                        title: "Advertise on Gab"
                     }, {
                         href: "/settings/blocks",
                         onClick: this.handleSidebarClose,
@@ -22930,8 +22915,8 @@ console.warn("GAB CLASSIC EXTENSION LOADED");
                     scrollKey: "profile_options",
                     items: [ {
                         icon: "cog",
-                        title: "Settings & Privacy",
-                        href: "/settings/preferences"
+                        title: "Settings",
+                        href: "/settings/display-options"
                     }, {
                         icon: "group",
                         title: "Help & Support",
@@ -23259,7 +23244,7 @@ console.warn("GAB CLASSIC EXTENSION LOADED");
                     to: "/deck",
                     onClick: this.handleOnClosePopover
                 }, {
-                    title: "Display Options",
+                    title: "Display options",
                     onClick: this.handleOnOpenDisplayModal
                 }, {
                     title: "Blocked users",
@@ -23268,8 +23253,8 @@ console.warn("GAB CLASSIC EXTENSION LOADED");
                     title: "Muted users",
                     to: "/settings/mutes"
                 }, {
-                    title: "Settings",
-                    href: "/settings/preferences"
+                    title: "Display Options",
+                    href: "/settings/display-options"
                 }, {
                     title: "Log out",
                     href: "/auth/sign_out"
@@ -40057,8 +40042,8 @@ console.warn("GAB CLASSIC EXTENSION LOADED");
                 title: "Muted users",
                 to: "/settings/mutes"
             }), Object(r.a)(c.a, {
-                title: "Preferences",
-                href: "/settings/preferences"
+                title: "Display options",
+                href: "/settings/display-options"
             })) : null;
         }, t;
     }(o.a.PureComponent);
