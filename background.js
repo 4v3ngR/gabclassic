@@ -79,6 +79,7 @@ const home=encoder.encode(`
                 return false;
             }
 
+            window.localStorage.setItem("lastload", Date.now());
             window.localStorage.setItem("state", state);
             return state;
         } catch (ex) {
@@ -87,11 +88,12 @@ const home=encoder.encode(`
     }
 
     let getme = async () => {
+        let lastLoad = window.localStorage.getItem("lastload") || 0;
         let state = window.localStorage.getItem("state");
         if (!state) {
             console.info("Waiting for state to load");
             state = await loadState();
-        } else {
+        } else if (lastLoad + 3600000 < Date.now()) {
             console.info("Not waiting for state to load");
             loadState();
         }
