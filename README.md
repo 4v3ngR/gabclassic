@@ -1,4 +1,4 @@
-# Gab classic
+<img width="272" height="60" alt="GABClassic" src="https://github.com/user-attachments/assets/79bfbc41-cd87-4e1b-a40f-17ee8dc72294" /></br>
 
 This is a firefox extension (sorry chrome users) to load the classic gab interface instead of the bloated react app they've replaced it with.
 
