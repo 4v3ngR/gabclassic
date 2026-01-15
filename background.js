@@ -1,20 +1,19 @@
 // Clear service workers and network cache on startup/install
-console.log("[Interceptor] Clearing Service Workers...");
-browser.browsingData.remove({
-    hostnames: ["gab.com", "www.gab.com"]
-}, {
-    serviceWorkers: true,
-    cache: false
-});
-
-browser.runtime.onInstalled.addListener(() => {
-  console.log("[Interceptor] Clearing Cache...");
-  browser.browsingData.remove({
-    hostnames: ["gab.com", "www.gab.com"]
-  }, {
-    serviceWorkers: false,
-    cache: true
-  });
+browser.runtime.onInstalled.addListener(async (details) => {
+  // Check the reason to only target 'install' or 'update'
+  if (details.reason === "install" || details.reason === "update") {
+    try {
+      await browser.browsingData.remove({
+        hostnames: ["gab.com", "www.gab.com"]
+      }, {
+        serviceWorkers: true,
+        cache: true
+      });
+      console.log(`Successfully cleared data for gab.com due to ${details.reason}.`);
+    } catch (error) {
+      console.error("Failed to clear data:", error);
+    }
+  }
 });
 
 browser.webRequest.filterResponseData
@@ -53,49 +52,58 @@ const home=encoder.encode(`
 <meta content='BO_CXXKZ4X6nRHs3rjx1ld-mejF4i080a_IWbvPN_-CwsREbsqB6QjXNvtHaQXe05-LhYd9s_dsJuU2fry0AjOw=' name='applicationServerKey'>
 <script id='initial-state' type='application/json'></script>
 <script>
-    window.onload = () => {
-        let theme = window.localStorage.getItem("theme");
-        if (theme) {
-            let bg = "white";
-            switch (theme.toLowerCase()) {
-                case "dark": bg = "#333"; break;
-                case "muted": bg = "#333"; break;
-                case "night": bg = "#1b1e2c"; break;
-                case "light": bg = "#f0f2f5"; break;
-                case "black": bg = "#000"; break;
+    let loadState = async() => {
+        try {
+            let resp = await fetch("https://gab.com/api/v3/me", {
+                "credentials": "include",
+                "headers": {
+                    "Accept": "*/*",
+                    "Accept-Language": "en-US,en;q=0.9",
+                    "Content-Type": "application/json",
+                    "Sec-GPC": "1",
+                    "Sec-Fetch-Dest": "empty",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Site": "same-origin",
+                    "Alt-Used": "gab.com",
+                    "Priority": "u=4",
+                    "Pragma": "no-cache",
+                    "Cache-Control": "no-cache"
+                },
+                "referrer": "https://gab.com/",
+                "method": "GET",
+                "mode": "cors"
+            });
+            let state = await resp.text();
+            let obj = JSON.parse(state || '""');
+            if (obj.error || !state) {
+                return false;
             }
-            document.body.style.background = bg;
+
+            window.localStorage.setItem("state", state);
+            return state;
+        } catch (ex) {
+            console.warn("got ex loading state: ", ex.message);
         }
     }
 
     let getme = async () => {
-        let resp = await fetch("https://gab.com/api/v3/me", {
-            "credentials": "include",
-            "headers": {
-                "Accept": "*/*",
-                "Accept-Language": "en-US,en;q=0.9",
-                "Content-Type": "application/json",
-                "Sec-GPC": "1",
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-origin",
-                "Alt-Used": "gab.com",
-                "Priority": "u=4",
-                "Pragma": "no-cache",
-                "Cache-Control": "no-cache"
-            },
-            "referrer": "https://gab.com/",
-            "method": "GET",
-            "mode": "cors"
-        });
-        let state = await resp.text();
-        let obj = JSON.parse(state);
-        if (obj.error) {
+        let state = window.localStorage.getItem("state");
+        if (!state) {
+            console.info("Waiting for state to load");
+            state = await loadState();
+        } else {
+            console.info("Not waiting for state to load");
+            loadState();
+        }
+
+        let obj = JSON.parse(state || '""');
+        if (obj.error || !state) {
             // if we get an error, redirect to the signin page
             window.location = "/auth/sign_in";
             return;
         }
 
+        // this is not the code you're looking for
         let quirks = window.localStorage.getItem("quirks");
         if (quirks) try {
             let deepMerge = (target, source) => {
@@ -115,6 +123,7 @@ const home=encoder.encode(`
             console.warn("bad quirks", ex.message, quirks);
         }
 
+        // store the state information in the DOM
         let node = document.getElementById('initial-state');
         node.innerText = state;
 
@@ -125,6 +134,7 @@ const home=encoder.encode(`
         }
         node.setAttribute("content", obj.meta.csrf.csrf_token);
 
+        // finally load the app scripts
         node = document.createElement('script');
         node.setAttribute('src', '/packs/js/common-d6df2ea8f045c39318d4.js');
         node.setAttribute('crossorigin', 'anonymous');
@@ -140,6 +150,20 @@ const home=encoder.encode(`
 </head>
 <body class=''>
 <div data-props='{&quot;locale&quot;:&quot;en&quot;}' id='gabsocial'>
+    <script>
+        let theme = window.localStorage.getItem("theme");
+        if (theme) {
+            let bg = "white";
+            switch (theme.toLowerCase()) {
+                case "dark": bg = "#333"; break;
+                case "muted": bg = "#333"; break;
+                case "night": bg = "#1b1e2c"; break;
+                case "light": bg = "#f0f2f5"; break;
+                case "black": bg = "#000"; break;
+            }
+            if (document.body) document.body.style.background = bg;
+        }
+    </script>
   <style>
     body, html { margin: 0; padding: 0; height: 100%; }
     #gabsocial { display: flex; justify-content: center; align-items: center; height: 100vh; }
