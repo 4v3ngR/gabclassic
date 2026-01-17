@@ -2,6 +2,13 @@
 
 This is a firefox extension (sorry chrome users) to load the classic gab interface instead of the bloated react app they've replaced it with.
 
+### Supported platforms
+The extension has been tested and shown to work in the following platforms:
+- Linux
+- macOS
+- windows 11
+- android 15 (iceraven browser)
+
 ### Installation
 - Launch firefox
 - go to the releases page https://github.com/4v3ngR/gabclassic/releases
